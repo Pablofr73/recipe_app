@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">recipe_app</string>
+    <string name="search">¿Que deseas cocinar hoy?</string>
+    <string name="ver_mas">Ver mas</string>
+
+    <!-- Barra de navegacion -->
+    <string name="title_home">Home</string>
+    <string name="title_recetas">Recetas</string>
+    <string name="title_profile">Perfil</string>
+    <string name="title_ingredientes">Ingredientes</string>
+</resources>

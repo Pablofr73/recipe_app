@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/house_fill"
+        android:title="@string/title_home" />
+    <item
+        android:id="@+id/navigation_recetas"
+        android:icon="@drawable/journal_album"
+        android:title="@string/title_recetas" />
+    <item
+        android:id="@+id/navigation_ingredientes"
+        android:icon="@drawable/egg_fried"
+        android:title="@string/title_ingredientes" />
+    <item
+        android:id="@+id/navigation_perfil"
+        android:icon="@drawable/person_circle"
+        android:title="@string/title_profile" />
+</menu>

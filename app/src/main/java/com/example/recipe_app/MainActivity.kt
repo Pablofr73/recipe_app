@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         val categories = listOf(
             Category("Mexicana", R.drawable.chili),
             Category("Italiana", R.drawable.italian),
-            Category("Jponesa", R.drawable.japan),
+            Category("Japonesa", R.drawable.japan),
             Category("Res", R.drawable.cow),
             Category("Cerdo", R.drawable.pig),
             Category("Pollo", R.drawable.chicken),

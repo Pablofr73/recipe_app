@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 
         val tvVerMas: TextView = findViewById(R.id.tv_ver_mas)
         tvVerMas.setOnClickListener {
-            // Cambia la lista de categorías y actualiza el texto y la flecha del TextView aquí...
+            // Cambia la lista de categorías y actualiza el texto aquí
             if (!isExpanded) {
                 categoryAdapter.categories = categories
                 categoryAdapter.notifyDataSetChanged()
@@ -60,5 +60,8 @@ class MainActivity : AppCompatActivity() {
                 isExpanded = false
             }
         }
+        // llamamos a la clase del otra clase para ahorrar espacio
+        val menuLateral = MenuLateral(this)
+        menuLateral.setupDrawer()
     }
 }

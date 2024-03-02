@@ -3,13 +3,17 @@ package com.example.recipe_app
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.drawable.Drawable
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.RecyclerView
 
 class Clases {
@@ -44,3 +48,18 @@ class CategoryAdapter(var categories: List<MainActivity.Category>) : RecyclerVie
 
     override fun getItemCount(): Int = categories.size
 }
+
+class MenuLateral(val activity: AppCompatActivity) { // esta es la clase que se llama desde el main para el btn hamburguesas
+    private lateinit var drawerLayout: DrawerLayout
+
+    fun setupDrawer() {
+        drawerLayout = activity.findViewById(R.id.drawer_layout)
+        val btnHamburguesa: ImageView = activity.findViewById(R.id.btnHamburguesa)
+        btnHamburguesa.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+    }
+}
+
+
+

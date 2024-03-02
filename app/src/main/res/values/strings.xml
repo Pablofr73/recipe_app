@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">recipe_app</string>
+    <string name="app_name">Garcini Flash </string>
     <string name="search">¿Que deseas cocinar hoy?</string>
     <string name="ver_mas">Ver mas</string>
 
@@ -8,4 +8,13 @@
     <string name="title_recetas">Recetas</string>
     <string name="title_profile">Perfil</string>
     <string name="title_ingredientes">Ingredientes</string>
+
+    <!-- navigation view -->
+    <string name="title_user">Usuario</string>
+    <string name="title_config">Configuracion general</string>
+    <string name="title_about">Informacion</string>
+    <string name="favorites">Platillos favoritos</string>
+    <string name="dark_mode">Modo oscuro</string>
+    <string name="about_app">Sobre la App</string>
+    <string name="terms_more">Terminos y condiciones</string>
 </resources>

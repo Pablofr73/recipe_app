@@ -1,0 +1,35 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/nav_usuario" android:title="@string/title_user" android:enabled="false" />
+    <!-- Grupo de configuración general -->
+    <group android:id="@+id/group_general_user">
+        <item
+            android:id="@+id/nav_favorites"
+            android:icon="@drawable/heart_fill"
+            android:title="@string/favorites" />
+    </group>
+
+    <item android:id="@+id/nav_general" android:title="@string/title_config" android:enabled="false" />
+    <!-- Grupo de configuración general -->
+    <group android:id="@+id/group_general_settings">
+        <item
+            android:id="@+id/nav_dark_mode"
+            android:icon="@drawable/moon"
+            android:title="@string/dark_mode" />
+    </group>
+
+    <!-- Separador -->
+    <item android:id="@+id/nav_divider" android:title="@string/title_about" android:enabled="false" />
+
+    <!-- Grupo de información -->
+    <group android:id="@+id/group_info">
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/phone"
+            android:title="@string/about_app" />
+        <item
+            android:id="@+id/nav_terms"
+            android:icon="@drawable/file"
+            android:title="@string/terms_more" />
+    </group>
+</menu>

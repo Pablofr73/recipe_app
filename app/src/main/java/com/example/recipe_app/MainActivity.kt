@@ -51,15 +51,16 @@ class MainActivity : AppCompatActivity() {
             if (!isExpanded) {
                 categoryAdapter.categories = categories
                 categoryAdapter.notifyDataSetChanged()
-                tvVerMas.text = "Ver Menos"
+                tvVerMas.text = getString(R.string.button_less) // Muestra "Ver menos" cuando se expande
                 isExpanded = true
             } else {
                 categoryAdapter.categories = categories.take(6)
                 categoryAdapter.notifyDataSetChanged()
-                tvVerMas.text = "Ver Más"
+                tvVerMas.text = getString(R.string.button_more) // Muestra "Ver más" cuando se contrae
                 isExpanded = false
             }
         }
+
         // llamamos a la clase del otra clase para ahorrar espacio
         val menuLateral = MenuLateral(this)
         menuLateral.setupDrawer()

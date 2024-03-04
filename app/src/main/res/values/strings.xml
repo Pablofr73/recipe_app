@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Garcini Flash </string>
     <string name="search">¿Que deseas cocinar hoy?</string>
-    <string name="ver_mas">Ver mas</string>
 
     <!-- Barra de navegacion -->
     <string name="title_home">Home</string>
@@ -17,4 +16,8 @@
     <string name="dark_mode">Modo oscuro</string>
     <string name="about_app">Sobre la App</string>
     <string name="terms_more">Terminos y condiciones</string>
+
+    <!-- Pantalla inicio -->
+    <string name="button_more">Ver más</string>
+    <string name="button_less">Ver menos</string>
 </resources>

@@ -1,54 +1,60 @@
 package com.example.recipe_app
 
-import android.content.Context
-import android.content.res.Configuration
-import android.graphics.drawable.Drawable
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.recyclerview.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.example.recipe_app.databinding.ActivityMainBinding
 
-class Clases {
-    fun Drawable.setTintForMode(context: Context) {
-        val nightModeFlags = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        val colorRes = if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
-            R.color.white
-        } else {
-            R.color.black
+import com.example.recipe_app.Fragment.FragmentHome
+import com.example.recipe_app.Fragment.FragmentRecetas
+import com.example.recipe_app.Fragment.FragmentIngredientes
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Fragments
+class MainScreenHandler(private val activity: AppCompatActivity, private val binding: ActivityMainBinding) {
+
+    fun setupWith() {
+        // Configura el adapter del ViewPager2 con los fragments.
+        val fragmentsList = listOf(FragmentHome(), FragmentRecetas(), FragmentIngredientes())
+        val adapter = ViewPagerAdapter(activity, fragmentsList)
+        binding.viewPager.adapter = adapter
+
+        // Mapeo de itemId a índice del ViewPager para simplificar el listener de BottomNavigationView.
+        val menuToPageIndexMap = mapOf(
+            R.id.navigation_home to 0,
+            R.id.navigation_recetas to 1,
+            R.id.navigation_ingredientes to 2
+        )
+
+        // Establece el listener para el BottomNavigationView para cambiar fragments.
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            binding.viewPager.currentItem = menuToPageIndexMap[item.itemId] ?: 0
+            true
         }
-        DrawableCompat.setTint(this, ContextCompat.getColor(context, colorRes))
+
+        // Sincroniza el ViewPager con el BottomNavigationView.
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                binding.bottomNavigation.menu.getItem(position).isChecked = true
+            }
+        })
     }
 
+    private inner class ViewPagerAdapter(activity: AppCompatActivity, private val fragmentsList: List<Fragment>) :
+        FragmentStateAdapter(activity) {
+        override fun getItemCount(): Int = fragmentsList.size
+        override fun createFragment(position: Int): Fragment = fragmentsList[position]
+    }
 }
-class CategoryAdapter(var categories: List<MainActivity.Category>) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    class CategoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val iconImageView: ImageView = view.findViewById(R.id.image_view_category_icon)
-        val nameTextView: TextView = view.findViewById(R.id.text_view_category_name)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_recycler_categorias, parent, false)
-        return CategoryViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        val category = categories[position]
-        holder.nameTextView.text = category.name
-        holder.iconImageView.setImageResource(category.icon)
-    }
-
-    override fun getItemCount(): Int = categories.size
-}
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Esta chucha debe controlar el btn de hamburgesa que despliega el
 class MenuLateral(val activity: AppCompatActivity) { // esta es la clase que se llama desde el main para el btn hamburguesas
     private lateinit var drawerLayout: DrawerLayout
 

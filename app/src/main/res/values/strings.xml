@@ -2,6 +2,9 @@
     <string name="app_name">Garcini Flash </string>
     <string name="search">¿Que deseas cocinar hoy?</string>
 
+    <!-- Botones -->
+    <string name="button_search">Buscar</string>
+
     <!-- Barra de navegacion -->
     <string name="title_home">Home</string>
     <string name="title_recetas">Recetas</string>

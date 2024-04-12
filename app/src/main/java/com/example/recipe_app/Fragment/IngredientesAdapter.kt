@@ -9,6 +9,8 @@ import com.example.recipe_app.R
 
 class IngredientesAdapter(private val ingredientes: List<Ingredientes.Ingrediente>) : RecyclerView.Adapter<IngredientesAdapter.ViewHolder>() {
 
+    private val seleccionados = MutableList(ingredientes.size) { false }  // Todos los ingredientes empiezan no seleccionados
+
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val checkBox: CheckBox = view.findViewById(R.id.checkBox)
         val textView: TextView = view.findViewById(R.id.textView)
@@ -22,8 +24,16 @@ class IngredientesAdapter(private val ingredientes: List<Ingredientes.Ingredient
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val ingrediente = ingredientes[position]
         holder.textView.text = ingrediente.nombre
-        // Configura aquí el CheckBox si es necesario
+        holder.checkBox.isChecked = seleccionados[position]
+
+        holder.checkBox.setOnCheckedChangeListener { _, isChecked ->
+            seleccionados[position] = isChecked
+        }
     }
 
     override fun getItemCount() = ingredientes.size
+    fun obtenerIngredientesSeleccionados(): List<String> {
+        return ingredientes.filterIndexed { index, _ -> seleccionados[index] }.map { it.nombre }
+    }
 }
+

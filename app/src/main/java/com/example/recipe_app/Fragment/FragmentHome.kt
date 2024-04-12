@@ -47,13 +47,11 @@ class FragmentHome : Fragment() {
         // Primero, inflas la vista del fragmento
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        // Después, inicializas y configuras tu RecyclerView
         val recyclerView2 = view.findViewById<RecyclerView>(R.id.activity_recycler_platillos)
-        recyclerView2.layoutManager = GridLayoutManager(context, 1) // Ajusta según necesites
-        val platillos = cargarPlatillos() // Asegúrate de que esta función esté definida en algún lugar
+        recyclerView2.layoutManager = GridLayoutManager(context, 1)
+        val platillos = cargarPlatillos()
         recyclerView2.adapter = com.example.recipe_app.PlatillosAdapter(platillos)
 
-        // Finalmente, retornas la vista
         return view
     }
 
@@ -70,13 +68,15 @@ class FragmentHome : Fragment() {
 
 
     private fun actualizaPlatillos(category: Category) {
-        //val platillos:List<Platillo> = -getPlatilloPorCategoria(category)
+        val platillos = getPlatilloPorCategoria(category)
 
-        val recyclerPlatillos = requireView().findViewById<RecyclerView>(R.id.recycler_view_categories)
+        // Aquí actualizamos el RecyclerView correcto
+        val recyclerPlatillos = requireView().findViewById<RecyclerView>(R.id.activity_recycler_platillos)
         recyclerPlatillos.layoutManager = LinearLayoutManager(requireContext())
-        //val categoryAdapter = PlatillosAdapter(platillos)
-        recyclerPlatillos.adapter = categoryAdapter
+        val platillosAdapter = com.example.recipe_app.PlatillosAdapter(platillos)
+        recyclerPlatillos.adapter = platillosAdapter
     }
+
 
     private fun cargarPlatillos(): List<Platillos.Platillo> {
         val platillos = mutableListOf<Platillos.Platillo>()
@@ -94,7 +94,29 @@ class FragmentHome : Fragment() {
 
         return platillos
     }
+
+    private fun getPlatilloPorCategoria(category: Category): List<Platillos.Platillo> {
+        val platillos = mutableListOf<Platillos.Platillo>()
+        val dbHelper = DbHelper(requireActivity())
+        val db = dbHelper.readableDatabase
+
+        val selectionArgs = arrayOf("${category.name}")
+        val cursor = db.rawQuery("SELECT cat_re_nombre, cat_re_descripcion FROM cat_recetas WHERE cat_re_categoria LIKE ?", selectionArgs)
+
+        while (cursor.moveToNext()) {
+            val nombre = cursor.getString(cursor.getColumnIndexOrThrow("cat_re_nombre"))
+            val descripcion = cursor.getString(cursor.getColumnIndexOrThrow("cat_re_descripcion"))
+            platillos.add(Platillos.Platillo(nombre, descripcion))
+        }
+        cursor.close()
+        db.close()
+
+        return platillos
+    }
+
+
 }
+
 
 
 class CategoryAdapter(private val categories: List<Category>) :

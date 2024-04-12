@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <!-- EditText para las busquedas -->
+    <!-- EditText para las búsquedas -->
     <EditText
         android:id="@+id/et_search"
         android:layout_width="0dp"
@@ -39,7 +39,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnHamburguesa"/>
 
-<!--    Page2-->
+    <!-- FrameLayout para oscurecer el contenido debajo del RecyclerView -->
+    <FrameLayout
+        android:id="@+id/shadowFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"
+        android:elevation="9dp"/>
+
+    <!-- RecyclerView para mostrar los resultados de la búsqueda -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_searchResults"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:elevation="10dp"
+    android:background="#EC1F1F"
+    app:layout_constraintTop_toBottomOf="@id/et_search"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Page2 con ViewPager2 -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
         android:layout_width="0dp"

@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainScreenHandler: MainScreenHandler
     private lateinit var menuLateral: MenuLateral
     private lateinit var infoextra: InfoExtra
+    private lateinit var searchHandler: SearchHandler
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
@@ -32,5 +33,7 @@ class MainActivity : AppCompatActivity() {
         dbHelper = DbHelper(this)
         val db = dbHelper.writableDatabase
         db.isOpen()
+
+        searchHandler = SearchHandler(this, binding.etSearch, binding.rvSearchResults)
     }
 }

@@ -1,5 +1,6 @@
 package com.example.recipe_app
 
+import android.app.Activity
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -17,11 +18,21 @@ import android.content.Context
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.os.Build
+import android.text.TextWatcher
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.recipe_app.Fragment.FragmentRecetas
 import com.google.android.material.navigation.NavigationView
+
+
+import android.text.Editable
+import android.view.View
+import android.view.ViewGroup
+import android.widget.EditText
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.recipe_app.db.DbHelper
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -166,4 +177,84 @@ class InfoExtra(private val context: Context, private val navigationView: Naviga
     }
 }
 
+class SearchHandler(private val context: Context, private val searchEditText: EditText, private val resultsRecyclerView: RecyclerView) {
+    private val dbHelper = DbHelper(context)
+    private val resultsAdapter = ResultsAdapter()
 
+    init {
+        resultsRecyclerView.layoutManager = LinearLayoutManager(context)
+        resultsRecyclerView.adapter = resultsAdapter
+        setupSearch()
+    }
+
+    private fun updateResults(results: List<String>) {
+        // Correr en el hilo principal
+        (context as? Activity)?.runOnUiThread {
+            if (results.isNotEmpty()) {
+                resultsAdapter.updateData(results)
+                resultsRecyclerView.visibility = View.VISIBLE
+            } else {
+                resultsRecyclerView.visibility = View.GONE
+            }
+        }
+    }
+
+
+
+    private fun setupSearch() {
+        searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                performSearch(s.toString())
+            }
+        })
+    }
+
+    private fun performSearch(query: String) {
+        if (query.isNotEmpty()) {
+            val db = dbHelper.readableDatabase
+            val cursor = db.rawQuery("SELECT cat_re_nombre FROM CAT_RECETAS WHERE cat_re_nombre LIKE '%$query%'", null)
+            val results = mutableListOf<String>()
+            while (cursor.moveToNext()) {
+                val nombre = cursor.getString(cursor.getColumnIndexOrThrow("cat_re_nombre"))
+                results.add(nombre)
+            }
+            cursor.close()
+            db.close()
+            updateResults(results)
+        } else {
+            updateResults(emptyList())
+        }
+    }
+}
+
+class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ResultViewHolder>() {
+    private var data = listOf<String>()
+
+    class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val textView: TextView = itemView.findViewById(android.R.id.text1)
+
+        fun bind(text: String) {
+            textView.text = text
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder {
+        val itemView = LayoutInflater.from(parent.context).inflate(android.R.layout.simple_list_item_1, parent, false)
+        return ResultViewHolder(itemView)
+    }
+
+    override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
+        holder.bind(data[position])
+    }
+
+    override fun getItemCount(): Int = data.size
+
+    fun updateData(newData: List<String>) {
+        data = newData
+        notifyDataSetChanged()
+    }
+}

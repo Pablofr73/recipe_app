@@ -10,7 +10,6 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.recipe_app.databinding.ActivityMainBinding
 
 import com.example.recipe_app.Fragment.FragmentHome
-import com.example.recipe_app.Fragment.FragmentRecetas
 import com.example.recipe_app.Fragment.FragmentIngredientes
 
 import android.app.AlertDialog
@@ -21,6 +20,7 @@ import android.os.Build
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.recipe_app.Fragment.FragmentRecetas
 import com.google.android.material.navigation.NavigationView
 
 

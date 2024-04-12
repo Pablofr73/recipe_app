@@ -8,11 +8,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipe_app.R
 import java.util.Locale
 
-class FragmentHome  : Fragment(){
+class FragmentHome : Fragment() {
     private lateinit var categoryAdapter: CategoryAdapter
 
     private val categories = listOf(
@@ -36,7 +37,11 @@ class FragmentHome  : Fragment(){
         Category("Bebidas", R.drawable.frappe),
     )
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -45,11 +50,28 @@ class FragmentHome  : Fragment(){
         val recyclerViewCategories = view.findViewById<RecyclerView>(R.id.recycler_view_categories)
         recyclerViewCategories.layoutManager = GridLayoutManager(context, 3)
         categoryAdapter = CategoryAdapter(categories)
+        categoryAdapter.onClickItem = { category ->
+            actualizaPlatillos(category)
+        }
         recyclerViewCategories.adapter = categoryAdapter
     }
+
+
+    private fun actualizaPlatillos(category: Category) {
+        val platillos:List<Platillo> = getPlatilloPorCategoria(category)
+
+        val recyclerPlatillos = requireView().findViewById<RecyclerView>(R.id.recycler_view_categories)
+        recyclerPlatillos.layoutManager = LinearLayoutManager(requireContext())
+        val categoryAdapter = PlatillosAdapter(platillos)
+        recyclerPlatillos.adapter = categoryAdapter
+    }
 }
+
+
 class CategoryAdapter(private val categories: List<Category>) :
     RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+
+    var onClickItem: (Category) -> Unit = {}
 
     class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageViewIcon: ImageView = itemView.findViewById(R.id.image_view_category_icon)
@@ -57,7 +79,8 @@ class CategoryAdapter(private val categories: List<Category>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_recycler_categorias, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.activity_recycler_categorias, parent, false)
         return CategoryViewHolder(view)
     }
 
@@ -65,9 +88,41 @@ class CategoryAdapter(private val categories: List<Category>) :
         val category = categories[position]
         holder.textViewName.text = category.name
         holder.imageViewIcon.setImageResource(category.icon)
+        holder.itemView.setOnClickListener {
+            onClickItem.invoke(category)
+        }
     }
 
     override fun getItemCount() = categories.size
 }
 
-    data class Category(val name: String, val icon: Int)
+class PlatillosAdapter(private val categories: List<Platillo>) :
+    RecyclerView.Adapter<PlatillosAdapter.PlatilloViewHolder>() {
+
+    var onClickItem: (Platillo) -> Unit = {}
+
+    class PlatilloViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val titulo: TextView = itemView.findViewById(R.id.titulo)
+        val descr: TextView = itemView.findViewById(R.id.descrip)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlatilloViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.activity_recycler_platillos, parent, false)
+        return PlatilloViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: PlatilloViewHolder, position: Int) {
+        val platillo = categories[position]
+        holder.titulo.text = platillo.titulo
+        holder.descr.text = platillo.descr
+        holder.itemView.setOnClickListener {
+            onClickItem.invoke(platillo)
+        }
+    }
+
+    override fun getItemCount() = categories.size
+}
+
+data class Category(val name: String, val icon: Int)
+data class Platillo(val titulo: String, val descr: String)

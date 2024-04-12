@@ -30,15 +30,15 @@ class MainScreenHandler(private val activity: AppCompatActivity, private val bin
 
     fun setupWith() {
         // Configura el adapter del ViewPager2 con los fragments.
-        val fragmentsList = listOf(FragmentHome(), FragmentRecetas(), FragmentIngredientes())
+        val fragmentsList = listOf(FragmentHome(), FragmentIngredientes(), FragmentRecetas())
         val adapter = ViewPagerAdapter(activity, fragmentsList)
         binding.viewPager.adapter = adapter
 
         // Mapeo de itemId a índice del ViewPager para simplificar el listener de BottomNavigationView.
         val menuToPageIndexMap = mapOf(
             R.id.navigation_home to 0,
-            R.id.navigation_recetas to 1,
-            R.id.navigation_ingredientes to 2
+            R.id.navigation_ingredientes to 1,
+            R.id.navigation_recetas to 2
         )
 
         // Establece el listener para el BottomNavigationView para cambiar fragments.

@@ -3,6 +3,7 @@ package com.example.recipe_app.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import androidx.annotation.Nullable;
 
 public class DbHelper extends SQLiteOpenHelper {
@@ -31,6 +32,16 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(TABLA_CAT_RECETAS_CREAR);
         db.execSQL(TABLA_CAT_INGREDIENTES_CREAR);
+        BaseInsert basein = new BaseInsert(db);
+        basein.insertarIngrediente("");
+        basein.insertarReceta(
+                "",
+                "",
+                "",
+                "",
+                "",
+                false
+        );
     }
 
     @Override

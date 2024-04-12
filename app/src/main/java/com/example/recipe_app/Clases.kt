@@ -13,6 +13,16 @@ import com.example.recipe_app.Fragment.FragmentHome
 import com.example.recipe_app.Fragment.FragmentRecetas
 import com.example.recipe_app.Fragment.FragmentIngredientes
 
+import android.app.AlertDialog
+import android.content.Context
+import android.provider.Settings
+import android.view.LayoutInflater
+import android.os.Build
+import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
+import com.google.android.material.navigation.NavigationView
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Fragments
@@ -67,5 +77,93 @@ class MenuLateral(val activity: AppCompatActivity) { // esta es la clase que se 
     }
 }
 
+class InfoExtra(private val context: Context, private val navigationView: NavigationView) {
+    init {
+    setupNavigationListener()
+}
+
+    private fun setupNavigationListener() {
+        navigationView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_about -> {
+                    ShowInfoPhone()
+                    true
+                }
+                R.id.nav_terms -> {
+                    showTerminos()
+                    true
+                }
+                    R.id.nav_dark_mode -> {
+                    Darkmode()
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    private fun Darkmode(){
+        val nightMode = AppCompatDelegate.getDefaultNightMode()
+        if (nightMode == AppCompatDelegate.MODE_NIGHT_YES) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+    }
+    private fun showTerminos() {
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.custom_alert, null)
+
+        val alertTitle = dialogView.findViewById<TextView>(R.id.alertTitle)
+        val alertMessage = dialogView.findViewById<TextView>(R.id.alertMessage)
+
+        alertTitle.text = context.getString(R.string.terms_more)
+        alertMessage.text = context.getString(R.string.Terminos)
+
+        val alertDialog = AlertDialog.Builder(context).apply {
+            setView(dialogView)
+        }.create()
+
+        val btnAccept = dialogView.findViewById<Button>(R.id.btnAcceptar)
+        btnAccept.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
+        alertDialog.setCancelable(false)
+    }
+
+    fun ShowInfoPhone() {
+        // Obtén la información del dispositivo
+        val deviceId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+        val fabricante = Build.MANUFACTURER
+        val marca = Build.BRAND
+        val modelo = Build.MODEL
+        val version = Build.VERSION.SDK_INT.toString()
+
+        val message = "ID: $deviceId\nFabricante: $fabricante\nMarca: $marca\nModelo: $modelo\nVersión: $version"
+
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.custom_alert, null)
+
+        val alertTitle = dialogView.findViewById<TextView>(R.id.alertTitle)
+        alertTitle.text = "Información del Dispositivo"
+
+        val alertMessage = dialogView.findViewById<TextView>(R.id.alertMessage)
+        alertMessage.text = message
+
+        val alertDialog = AlertDialog.Builder(context).apply {
+            setView(dialogView)
+        }.create()
+
+        val btnAccept = dialogView.findViewById<Button>(R.id.btnAcceptar)
+        btnAccept.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        alertDialog.show()
+        alertDialog.setCancelable(false)
+    }
+}
 
 

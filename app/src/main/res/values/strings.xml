@@ -4,6 +4,7 @@
 
     <!-- Botones -->
     <string name="button_search">Buscar</string>
+    <string name="button_aceptar">Aceptar</string>
 
     <!-- Barra de navegacion -->
     <string name="title_home">Home</string>
@@ -17,10 +18,13 @@
     <string name="title_about">Informacion</string>
     <string name="favorites">Platillos favoritos</string>
     <string name="dark_mode">Modo oscuro</string>
-    <string name="about_app">Sobre la App</string>
+    <string name="about_app">Sobre el telefono</string>
     <string name="terms_more">Terminos y condiciones</string>
 
     <!-- Pantalla inicio -->
     <string name="button_more">Ver más</string>
     <string name="button_less">Ver menos</string>
+
+    <!--    Alertas-->
+    <string name="Terminos">Esta aplicación de cocina para Android ha sido desarrollada como parte de un proyecto escolar y está destinada exclusivamente a fines educativos. La aplicación proporciona recetas, consejos de cocina, y herramientas de gestión de ingredientes a sus usuarios. Al utilizar esta aplicación, el usuario reconoce y acepta que la información proporcionada es solo para uso personal y no debe ser utilizada para fines comerciales.</string>
 </resources>

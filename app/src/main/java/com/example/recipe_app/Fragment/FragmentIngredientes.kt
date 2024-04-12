@@ -66,4 +66,21 @@ class FragmentIngredientes  : Fragment(){
         return platillos
     }
 
+    private fun btnBuscar(): List<Platillos.Platillo> {
+        val platillos = mutableListOf<Platillos.Platillo>()
+        val dbHelper = DbHelper(requireActivity()) // use 'requireActivity()' para obtener el contexto seguro
+        val db = dbHelper.readableDatabase
+
+        val cursor = db.rawQuery("SELECT cat_re_nombre, cat_re_descripcion FROM cat_recetas", null)
+        while (cursor.moveToNext()) {
+            val nombre = cursor.getString(cursor.getColumnIndexOrThrow("cat_re_nombre"))
+            val descripcion = cursor.getString(cursor.getColumnIndexOrThrow("cat_re_descripcion"))
+            platillos.add(Platillos.Platillo(nombre, descripcion))
+        }
+        cursor.close()
+        db.close()
+
+        return platillos
+    }
+
 }

@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.recipe_app.Platillos
 import com.example.recipe_app.R
+import com.example.recipe_app.db.DbHelper
 import java.util.Locale
 
 class FragmentHome : Fragment() {
@@ -42,7 +44,17 @@ class FragmentHome : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        // Primero, inflas la vista del fragmento
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        // Después, inicializas y configuras tu RecyclerView
+        val recyclerView2 = view.findViewById<RecyclerView>(R.id.activity_recycler_platillos)
+        recyclerView2.layoutManager = GridLayoutManager(context, 1) // Ajusta según necesites
+        val platillos = cargarPlatillos() // Asegúrate de que esta función esté definida en algún lugar
+        recyclerView2.adapter = com.example.recipe_app.PlatillosAdapter(platillos)
+
+        // Finalmente, retornas la vista
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,6 +76,23 @@ class FragmentHome : Fragment() {
         recyclerPlatillos.layoutManager = LinearLayoutManager(requireContext())
         //val categoryAdapter = PlatillosAdapter(platillos)
         recyclerPlatillos.adapter = categoryAdapter
+    }
+
+    private fun cargarPlatillos(): List<Platillos.Platillo> {
+        val platillos = mutableListOf<Platillos.Platillo>()
+        val dbHelper = DbHelper(requireActivity()) // use 'requireActivity()' para obtener el contexto seguro
+        val db = dbHelper.readableDatabase
+
+        val cursor = db.rawQuery("SELECT cat_re_nombre, cat_re_descripcion FROM cat_recetas", null)
+        while (cursor.moveToNext()) {
+            val nombre = cursor.getString(cursor.getColumnIndexOrThrow("cat_re_nombre"))
+            val descripcion = cursor.getString(cursor.getColumnIndexOrThrow("cat_re_descripcion"))
+            platillos.add(Platillos.Platillo(nombre, descripcion))
+        }
+        cursor.close()
+        db.close()
+
+        return platillos
     }
 }
 

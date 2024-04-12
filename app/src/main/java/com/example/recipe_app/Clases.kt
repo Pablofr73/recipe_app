@@ -177,9 +177,10 @@ class InfoExtra(private val context: Context, private val navigationView: Naviga
     }
 }
 
-class SearchHandler(private val context: Context, private val searchEditText: EditText, private val resultsRecyclerView: RecyclerView) {
+//////////////////////////////
+class SearchHandler(private val context: Context, private val searchEditText: EditText, private val resultsRecyclerView: RecyclerView) : OnItemClickListener {
     private val dbHelper = DbHelper(context)
-    private val resultsAdapter = ResultsAdapter()
+    private val resultsAdapter = ResultsAdapter(this)
 
     init {
         resultsRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -188,7 +189,6 @@ class SearchHandler(private val context: Context, private val searchEditText: Ed
     }
 
     private fun updateResults(results: List<String>) {
-        // Correr en el hilo principal
         (context as? Activity)?.runOnUiThread {
             if (results.isNotEmpty()) {
                 resultsAdapter.updateData(results)
@@ -198,8 +198,6 @@ class SearchHandler(private val context: Context, private val searchEditText: Ed
             }
         }
     }
-
-
 
     private fun setupSearch() {
         searchEditText.addTextChangedListener(object : TextWatcher {
@@ -229,9 +227,14 @@ class SearchHandler(private val context: Context, private val searchEditText: Ed
             updateResults(emptyList())
         }
     }
+
+    override fun onItemClick(item: String) {
+        searchEditText.setText("") // Limpia la barra de búsqueda
+        resultsRecyclerView.visibility = View.GONE // Oculta el RecyclerView
+    }
 }
 
-class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ResultViewHolder>() {
+class ResultsAdapter(private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<ResultsAdapter.ResultViewHolder>() {
     private var data = listOf<String>()
 
     class ResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -248,7 +251,11 @@ class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ResultViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ResultViewHolder, position: Int) {
-        holder.bind(data[position])
+        val item = data[position]
+        holder.bind(item)
+        holder.itemView.setOnClickListener {
+            itemClickListener.onItemClick(item) // Llama al método onItemClick cuando un elemento es clickeado
+        }
     }
 
     override fun getItemCount(): Int = data.size
@@ -257,4 +264,8 @@ class ResultsAdapter : RecyclerView.Adapter<ResultsAdapter.ResultViewHolder>() {
         data = newData
         notifyDataSetChanged()
     }
+}
+
+interface OnItemClickListener {
+    fun onItemClick(item: String)
 }

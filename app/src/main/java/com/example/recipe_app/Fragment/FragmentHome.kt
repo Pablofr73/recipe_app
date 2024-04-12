@@ -58,11 +58,11 @@ class FragmentHome : Fragment() {
 
 
     private fun actualizaPlatillos(category: Category) {
-        val platillos:List<Platillo> = getPlatilloPorCategoria(category)
+        //val platillos:List<Platillo> = -getPlatilloPorCategoria(category)
 
         val recyclerPlatillos = requireView().findViewById<RecyclerView>(R.id.recycler_view_categories)
         recyclerPlatillos.layoutManager = LinearLayoutManager(requireContext())
-        val categoryAdapter = PlatillosAdapter(platillos)
+        //val categoryAdapter = PlatillosAdapter(platillos)
         recyclerPlatillos.adapter = categoryAdapter
     }
 }

@@ -7,8 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipe_app.databinding.ActivityMainBinding
+import com.example.recipe_app.db.DbHelper
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var dbHelper: DbHelper
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainScreenHandler: MainScreenHandler
     private lateinit var menuLateral: MenuLateral
@@ -23,9 +25,12 @@ class MainActivity : AppCompatActivity() {
         mainScreenHandler = MainScreenHandler(this, binding)
         mainScreenHandler.setupWith()
 
-        menuLateral = MenuLateral(this) // Inicializa MenuLateral con la instancia actual de MainActivity
+        menuLateral = MenuLateral(this)
         menuLateral.setupDrawer()
 
         infoextra = InfoExtra(this, binding.navView)
+        dbHelper = DbHelper(this)
+        val db = dbHelper.writableDatabase
+        db.isOpen()
     }
 }

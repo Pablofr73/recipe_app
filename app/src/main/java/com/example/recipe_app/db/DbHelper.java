@@ -33,15 +33,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(TABLA_CAT_RECETAS_CREAR);
         db.execSQL(TABLA_CAT_INGREDIENTES_CREAR);
         BaseInsert basein = new BaseInsert(db);
-        basein.insertarIngrediente("");
-        basein.insertarReceta(
-                "",
-                "",
-                "",
-                "",
-                "",
-                false
-        );
+        basein.inicializarDatos();
     }
 
     @Override

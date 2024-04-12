@@ -55,10 +55,10 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:elevation="10dp"
-    android:background="#EC1F1F"
-    app:layout_constraintTop_toBottomOf="@id/et_search"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/et_search"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Page2 con ViewPager2 -->
     <androidx.viewpager2.widget.ViewPager2

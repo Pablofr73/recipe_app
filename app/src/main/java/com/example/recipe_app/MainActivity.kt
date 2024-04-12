@@ -2,14 +2,10 @@ package com.example.recipe_app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
-import android.widget.TextView
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.recipe_app.databinding.ActivityMainBinding
 import com.example.recipe_app.db.DbHelper
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SearchHandler.SearchHandlerCallback {
     private lateinit var dbHelper: DbHelper
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainScreenHandler: MainScreenHandler
@@ -34,6 +30,9 @@ class MainActivity : AppCompatActivity() {
         val db = dbHelper.writableDatabase
         db.isOpen()
 
-        searchHandler = SearchHandler(this, binding.etSearch, binding.rvSearchResults)
+        searchHandler = SearchHandler(this, binding.etSearch, binding.rvSearchResults, this)
+    }
+    override fun onRecetaSelected() {
+        binding.viewPager.currentItem = 2
     }
 }

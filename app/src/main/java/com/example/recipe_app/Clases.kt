@@ -179,7 +179,15 @@ class InfoExtra(private val context: Context, private val navigationView: Naviga
 }
 
 //////////////////////////////
-class SearchHandler(private val context: Context, private val searchEditText: EditText, private val resultsRecyclerView: RecyclerView) : OnItemClickListener {
+class SearchHandler(private val context: Context,
+                    private val searchEditText: EditText,
+                    private val resultsRecyclerView: RecyclerView,
+                    private val callback: SearchHandlerCallback) : OnItemClickListener {
+
+    interface SearchHandlerCallback {
+        fun onRecetaSelected()
+    }
+
     private val dbHelper = DbHelper(context)
     private val resultsAdapter = ResultsAdapter(this)
     var recetaPlatillo: String? = null
@@ -222,10 +230,11 @@ class SearchHandler(private val context: Context, private val searchEditText: Ed
                 val ingredientes = cursor.getString(cursor.getColumnIndexOrThrow("cat_re_ingredientes"))
                 val receta = cursor.getString(cursor.getColumnIndexOrThrow("cat_re_receta"))
 
+                callback.onRecetaSelected()
                 // Imprime los resultados en el Logcat
-                Log.d("SearchHandler", "Nombre: $nombre")
-                Log.d("SearchHandler", "Ingredientes: $ingredientes")
-                Log.d("SearchHandler", "Receta: $receta")
+//                Log.d("SearchHandler", "Nombre: $nombre")
+//                Log.d("SearchHandler", "Ingredientes: $ingredientes")
+//                Log.d("SearchHandler", "Receta: $receta")
             } else {
                 Log.d("SearchHandler", "No se encontró la receta para: $nombreReceta")
             }
@@ -294,3 +303,4 @@ class ResultsAdapter(private val itemClickListener: OnItemClickListener) : Recyc
 interface OnItemClickListener {
     fun onItemClick(item: String)
 }
+

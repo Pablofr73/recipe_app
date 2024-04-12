@@ -27,6 +27,7 @@ import com.google.android.material.navigation.NavigationView
 
 
 import android.text.Editable
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -181,6 +182,7 @@ class InfoExtra(private val context: Context, private val navigationView: Naviga
 class SearchHandler(private val context: Context, private val searchEditText: EditText, private val resultsRecyclerView: RecyclerView) : OnItemClickListener {
     private val dbHelper = DbHelper(context)
     private val resultsAdapter = ResultsAdapter(this)
+    var recetaPlatillo: String? = null
 
     init {
         resultsRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -211,6 +213,27 @@ class SearchHandler(private val context: Context, private val searchEditText: Ed
         })
     }
 
+    fun llamarReceta(nombreReceta: String?) {
+        nombreReceta?.let {
+            val db = dbHelper.readableDatabase
+            val cursor = db.rawQuery("SELECT cat_re_nombre, cat_re_ingredientes, cat_re_receta FROM CAT_RECETAS WHERE cat_re_nombre = ?", arrayOf(it))
+            if (cursor.moveToFirst()) {
+                val nombre = cursor.getString(cursor.getColumnIndexOrThrow("cat_re_nombre"))
+                val ingredientes = cursor.getString(cursor.getColumnIndexOrThrow("cat_re_ingredientes"))
+                val receta = cursor.getString(cursor.getColumnIndexOrThrow("cat_re_receta"))
+
+                // Imprime los resultados en el Logcat
+                Log.d("SearchHandler", "Nombre: $nombre")
+                Log.d("SearchHandler", "Ingredientes: $ingredientes")
+                Log.d("SearchHandler", "Receta: $receta")
+            } else {
+                Log.d("SearchHandler", "No se encontró la receta para: $nombreReceta")
+            }
+            cursor.close()
+            db.close()
+        }
+    }
+
     private fun performSearch(query: String) {
         if (query.isNotEmpty()) {
             val db = dbHelper.readableDatabase
@@ -229,8 +252,10 @@ class SearchHandler(private val context: Context, private val searchEditText: Ed
     }
 
     override fun onItemClick(item: String) {
+        recetaPlatillo = item
         searchEditText.setText("") // Limpia la barra de búsqueda
         resultsRecyclerView.visibility = View.GONE // Oculta el RecyclerView
+        llamarReceta(recetaPlatillo)
     }
 }
 

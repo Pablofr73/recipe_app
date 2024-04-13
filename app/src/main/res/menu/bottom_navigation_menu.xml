@@ -5,11 +5,11 @@
         android:icon="@drawable/house_fill"
         android:title="@string/title_home" />
     <item
-        android:id="@+id/navigation_recetas"
-        android:icon="@drawable/journal_album"
-        android:title="@string/title_recetas" />
-    <item
         android:id="@+id/navigation_ingredientes"
         android:icon="@drawable/egg_fried"
         android:title="@string/title_ingredientes" />
+    <item
+        android:id="@+id/navigation_recetas"
+        android:icon="@drawable/journal_album"
+        android:title="@string/title_recetas" />
 </menu>

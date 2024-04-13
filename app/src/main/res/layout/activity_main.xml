@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <!-- EditText para las busquedas -->
+    <!-- EditText para las búsquedas -->
     <EditText
         android:id="@+id/et_search"
         android:layout_width="0dp"
@@ -39,44 +39,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnHamburguesa"/>
 
+    <!-- FrameLayout para oscurecer el contenido debajo del RecyclerView -->
+    <FrameLayout
+        android:id="@+id/shadowFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone"
+        android:elevation="9dp"/>
 
-    <TextView
-        android:id="@+id/tv_ver_mas"
-        android:layout_width="wrap_content"
+    <!-- RecyclerView para mostrar los resultados de la búsqueda -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_searchResults"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:text="@string/ver_mas"
-        android:padding="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        android:elevation="10dp"
+        android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@id/et_search"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- RecyclerView para las Categories -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_categories"
+    <!-- Page2 con ViewPager2 -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_ver_mas"
+        app:layout_constraintTop_toBottomOf="@id/et_search"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/recycler_vplat"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="3"
-        tools:listitem="@layout/activity_recycler_categorias" />
-
-    <!-- RecyclerView para los Platillos -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_vplat"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/recycler_view_categories"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- Bottom Navigation View -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -88,6 +80,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_navigation_menu" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- NavigationView para el menú de navegación lateral -->

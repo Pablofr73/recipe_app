@@ -2,6 +2,8 @@ package com.example.recipe_app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
+import com.example.recipe_app.Fragment.FragmentRecetas2
 import com.example.recipe_app.databinding.ActivityMainBinding
 import com.example.recipe_app.db.DbHelper
 
@@ -12,6 +14,12 @@ class MainActivity : AppCompatActivity(), SearchHandler.SearchHandlerCallback {
     private lateinit var menuLateral: MenuLateral
     private lateinit var infoextra: InfoExtra
     private lateinit var searchHandler: SearchHandler
+
+    private val mainViewModel by viewModels<ViewModelMain>()
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_main)
@@ -32,7 +40,16 @@ class MainActivity : AppCompatActivity(), SearchHandler.SearchHandlerCallback {
 
         searchHandler = SearchHandler(this, binding.etSearch, binding.rvSearchResults, this)
     }
-    override fun onRecetaSelected() {
-        binding.viewPager.currentItem = 2
+    override fun onRecetaSelected(nombre: String, ingredientes: String, receta: String) {
+        binding.viewPager.currentItem = 2  // Cambia al índice del FragmentRecetas
+        mainViewModel.setNuevaReceta(ViewModelMain.Receta(
+            nombre,
+            ingredientes,
+            receta
+        ))
+
+
     }
+
+
 }

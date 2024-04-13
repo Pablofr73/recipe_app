@@ -22,7 +22,7 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.recipe_app.Fragment.FragmentRecetas
+import com.example.recipe_app.Fragment.FragmentRecetas2
 import com.google.android.material.navigation.NavigationView
 
 
@@ -40,9 +40,11 @@ import com.example.recipe_app.db.DbHelper
 // Fragments
 class MainScreenHandler(private val activity: AppCompatActivity, private val binding: ActivityMainBinding) {
 
+    val fragmentsList = listOf(FragmentHome(), FragmentIngredientes(), FragmentRecetas2())
+
     fun setupWith() {
         // Configura el adapter del ViewPager2 con los fragments.
-        val fragmentsList = listOf(FragmentHome(), FragmentIngredientes(), FragmentRecetas())
+
         val adapter = ViewPagerAdapter(activity, fragmentsList)
         binding.viewPager.adapter = adapter
 
@@ -185,8 +187,9 @@ class SearchHandler(private val context: Context,
                     private val callback: SearchHandlerCallback) : OnItemClickListener {
 
     interface SearchHandlerCallback {
-        fun onRecetaSelected()
+        fun onRecetaSelected(nombre: String, ingredientes: String, receta: String)
     }
+
 
     private val dbHelper = DbHelper(context)
     private val resultsAdapter = ResultsAdapter(this)
@@ -221,7 +224,7 @@ class SearchHandler(private val context: Context,
         })
     }
 
-    fun llamarReceta(nombreReceta: String?) {
+    fun llamarReceta(nombreReceta: String) {
         nombreReceta?.let {
             val db = dbHelper.readableDatabase
             val cursor = db.rawQuery("SELECT cat_re_nombre, cat_re_ingredientes, cat_re_receta FROM CAT_RECETAS WHERE cat_re_nombre = ?", arrayOf(it))
@@ -230,13 +233,14 @@ class SearchHandler(private val context: Context,
                 val ingredientes = cursor.getString(cursor.getColumnIndexOrThrow("cat_re_ingredientes"))
                 val receta = cursor.getString(cursor.getColumnIndexOrThrow("cat_re_receta"))
 
-                callback.onRecetaSelected()
-                // Imprime los resultados en el Logcat
-//                Log.d("SearchHandler", "Nombre: $nombre")
-//                Log.d("SearchHandler", "Ingredientes: $ingredientes")
-//                Log.d("SearchHandler", "Receta: $receta")
+                // Comprueba si alguno de los campos está vacío o no
+                Log.d("SearchHandler", "Nombre: $nombre, Está vacío: ${nombre.isEmpty()}")
+                Log.d("SearchHandler", "Ingredientes: $ingredientes, Está vacío: ${ingredientes.isEmpty()}")
+                Log.d("SearchHandler", "Receta: $receta, Está vacío: ${receta.isEmpty()}")
+
+                callback.onRecetaSelected(nombre, ingredientes, receta)
             } else {
-                Log.d("SearchHandler", "No se encontró la receta para: $nombreReceta")
+                Log.d("SearchHandler", "No se encontraron resultados para: $nombreReceta")
             }
             cursor.close()
             db.close()
@@ -264,7 +268,7 @@ class SearchHandler(private val context: Context,
         recetaPlatillo = item
         searchEditText.setText("") // Limpia la barra de búsqueda
         resultsRecyclerView.visibility = View.GONE // Oculta el RecyclerView
-        llamarReceta(recetaPlatillo)
+        llamarReceta(recetaPlatillo!!)
     }
 }
 
